@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>For My Qandeel - Chand Raat 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Great+Vibes&family=Cinzel:wght@400;600&display=swap');
+*{-webkit-tap-highlight-color:transparent;margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cormorant Garamond',serif;background:linear-gradient(to bottom,#0a0e27 0%,#1a1f3a 50%,#0a0e27 100%);color:#f5e6d3;overflow-x:hidden;min-height:100vh;word-break:break-word}
+#canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.butterfly{position:fixed;font-size:20px;pointer-events:none;z-index:5;animation:flutter 8s infinite ease-in-out;opacity:.7}
+@keyframes flutter{0%,100%{transform:translateY(0) translateX(0) rotate(0)}25%{transform:translateY(-30px) translateX(20px) rotate(10deg)}50%{transform:translateY(-10px) translateX(-15px) rotate(-10deg)}75%{transform:translateY(-40px) translateX(10px) rotate(5deg)}}
+.touch-fly{position:fixed;pointer-events:none;z-index:9999;animation:touchFade 1.5s ease-out forwards}
+@keyframes touchFade{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.5) translateY(-80px)}}
+.stage{position:fixed;top:0;left:0;width:100%;height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:1rem;z-index:10;opacity:0;transition:opacity 1s}
+.stage.active{display:flex;opacity:1}
+.card{background:rgba(15,25,50,.65);backdrop-filter:blur(35px);border:1px solid rgba(245,230,211,.25);border-radius:28px;padding:2rem 1.5rem;box-shadow:0 12px 60px rgba(0,0,0,.6);width:95%;max-width:520px;max-height:70vh;overflow-y:auto;overflow-x:hidden}
+.card::-webkit-scrollbar{width:5px}
+.card::-webkit-scrollbar-track{background:rgba(15,25,50,.4);border-radius:10px}
+.card::-webkit-scrollbar-thumb{background:rgba(244,213,141,.6);border-radius:10px}
+.txt{font-size:1.1rem;line-height:1.9;letter-spacing:.3px;color:#f5e6d3;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.8);word-break:break-word;margin-bottom:1rem}
+.btn{display:inline-block;margin-top:1.5rem;padding:1rem 2rem;font-size:1rem;color:#f4d58d;border:2px solid rgba(244,213,141,.6);border-radius:50px;cursor:pointer;background:rgba(244,213,141,.1);font-family:Cinzel,serif;transition:all .3s}
+.btn:active{transform:scale(.97);background:rgba(244,213,141,.25);box-shadow:0 0 30px rgba(244,213,141,.5)}
+.key{width:100px;height:100px;margin:2rem 0;cursor:pointer;animation:pulse 3s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(244,213,141,.9))}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.quiz{margin:2rem 0;padding:1.5rem;background:rgba(244,213,141,.12);border:2px solid rgba(244,213,141,.4);border-radius:20px}
+.opt{display:block;margin:.8rem 0;padding:.9rem 1.5rem;background:rgba(15,25,50,.6);border:2px solid rgba(244,213,141,.5);border-radius:50px;color:#f4d58d;cursor:pointer;transition:all .3s}
+.opt:active{transform:scale(.97)}
+.opt.correct{background:linear-gradient(135deg,#d4a574,#f4d58d);border-color:#f4d58d;box-shadow:0 0 40px rgba(244,213,141,.8)}
+.burst{position:fixed;font-size:30px;pointer-events:none;z-index:9999;animation:burstUp 2s ease-out forwards}
+@keyframes burstUp{0%{opacity:1;transform:scale(.5) translateY(0) rotate(0)}100%{opacity:0;transform:scale(1.5) translateY(-150px) rotate(360deg)}}
+.moon{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff9e6,#f4d58d);box-shadow:0 0 70px rgba(244,213,141,.95);cursor:pointer;margin:2rem 0}
+.moon::before{content:'';position:absolute;width:30px;height:30px;background:rgba(200,180,140,.45);border-radius:50%;top:25%;left:20%}
+.draw-canvas{width:100%;height:250px;background:#000;border-radius:20px;margin:1.5rem 0;cursor:crosshair;border:2px solid rgba(244,213,141,.4)}
+.flower{position:relative;width:200px;height:200px;margin:2rem auto}
+.petal{position:absolute;width:60px;height:80px;background:linear-gradient(135deg,#d4a574,#f4d58d);border-radius:50% 50% 50% 0;cursor:pointer;transition:all .3s;box-shadow:0 0 20px rgba(244,213,141,.6)}
+.petal:active{transform:scale(.95)}
+.petal-msg{margin-top:1rem;font-size:1.2rem;color:#ff69b4;text-align:center;min-height:30px}
+.wheel-container{position:relative;width:280px;height:280px;margin:2rem auto}
+.wheel{width:100%;height:100%;border-radius:50%;border:8px solid #f4d58d;position:relative;transition:transform 3s cubic-bezier(.25,.1,.25,1);box-shadow:0 0 40px rgba(244,213,141,.8)}
+.wheel-segment{position:absolute;width:50%;height:50%;transform-origin:100% 100%;clip-path:polygon(0 0,100% 0,100% 100%)}
+.spin-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f4d58d,#d4a574);border:4px solid #fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:bold;color:#0a0e27;box-shadow:0 0 30px rgba(244,213,141,1);z-index:10}
+.spin-btn:active{transform:translate(-50%,-50%) scale(.95)}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:rgba(15,25,50,.95);border:2px solid #f4d58d;border-radius:30px;padding:2rem;max-width:90%;z-index:1000;opacity:0;transition:all .5s}
+.modal.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.balloon{position:absolute;width:50px;height:60px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;cursor:pointer;animation:rise 8s linear infinite;box-shadow:inset -10px -10px 20px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;text-align:center;padding:.3rem}
+@keyframes rise{0%{transform:translateY(0) translateX(0)}100%{transform:translateY(-400px) translateX(20px)}}
+.balloon-container{position:relative;width:100%;height:300px;overflow:hidden;background:rgba(0,0,0,.2);border-radius:20px;margin:1.5rem 0}
+.counter{font-size:1.3rem;color:#f4d58d;text-align:center;margin-top:1rem}
+.safe{width:120px;height:120px;margin:2rem auto;cursor:pointer;animation:pulse 2.5s ease-in-out infinite}
+.safe.unlock{animation:unlock 1.5s ease-out forwards}
+@keyframes unlock{0%{transform:scale(1) rotate(0)}50%{transform:scale(1.1) rotate(10deg)}100%{transform:scale(0) rotate(360deg);opacity:0}}
+.input{width:100%;padding:1rem;margin:1rem 0;background:rgba(15,25,50,.7);border:2px solid rgba(244,213,141,.5);border-radius:50px;color:#f4d58d;font-size:1.1rem;text-align:center;font-family:'Cormorant Garamond',serif}
+.input:focus{outline:none;border-color:#f4d58d;box-shadow:0 0 20px rgba(244,213,141,.5)}
+.skip{font-size:.85rem;color:rgba(244,213,141,.6);cursor:pointer;margin-top:1rem}
+.henna{font-family:'Great Vibes',cursive;font-size:3.5rem;color:#f4d58d;text-shadow:0 0 45px rgba(244,213,141,.9);cursor:pointer;user-select:none;margin:2rem 0}
+.henna.pulsing{animation:heartbeat 1.3s ease-in-out infinite;color:#8b2635;text-shadow:0 0 55px rgba(139,38,53,1)}
+@keyframes heartbeat{0%,100%{transform:scale(1)}25%{transform:scale(1.1)}50%{transform:scale(1)}75%{transform:scale(1.1)}}
+.gift{width:110px;height:110px;margin:2rem auto;cursor:pointer;animation:pulse 2.5s ease-in-out infinite}
+.gift.opening{animation:openBox 1.5s ease-out forwards}
+@keyframes openBox{0%{transform:scale(1) rotateY(0)}50%{transform:scale(1.1) rotateY(180deg)}100%{transform:scale(1.2) rotateY(360deg);opacity:0}}
+.ring{width:130px;height:130px;margin:2rem auto;opacity:0;transform:scale(.5);transition:all 1.5s;filter:drop-shadow(0 0 40px rgba(255,255,255,.9))}
+.ring.visible{opacity:1;transform:scale(1);animation:sparkle 2s ease-in-out infinite}
+@keyframes sparkle{0%,100%{filter:drop-shadow(0 0 40px rgba(255,255,255,.9))}50%{filter:drop-shadow(0 0 60px rgba(255,255,255,1)) brightness(1.3)}}
+.countdown{font-size:2.3rem;color:#f4d58d;text-shadow:0 0 35px rgba(244,213,141,1);font-variant-numeric:tabular-nums;margin-bottom:2rem;font-family:Cinzel,serif}
+.final-heart{font-size:2.3rem;color:#f4d58d;text-shadow:0 0 50px rgba(244,213,141,1);cursor:pointer;animation:pulseHeart 2.8s ease-in-out infinite;margin-top:2.5rem}
+@keyframes pulseHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.shimmer{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(244,213,141,.8),transparent);border-radius:50%;opacity:0;z-index:999}
+.shimmer.active{animation:burst 1.5s ease-out forwards}
+@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) scale(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(4)}}
+@media(max-width:400px){.txt{font-size:1rem}.moon{width:140px;height:140px}.henna{font-size:3rem}.countdown{font-size:2rem}.wheel-container{width:240px;height:240px}.flower{width:180px;height:180px}}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="shimmer" id="shimmer"></div>
+
+<!-- STAGE 1: PORTAL -->
+<div class="stage active" id="s1">
+<div class="card">
+<p class="txt">Chand Raat Mubarak, Meri Jaan, Meri Pyari Wifey <span style="color:#f4d58d;font-weight:600">Qandeel</span>... ❤️<br><br>Aapka Hubby Shafeeq aapse bhot door hai, par aapke dil ke sabse paas hai.<br><br>Is raat par aapke liye ek magical safar hai jahan aap khel sakti hain, muskura sakti hain, aur sukoon pa sakti hain.</p>
+<svg class="key" id="key" viewBox="0 0 100 100"><circle cx="25" cy="25" r="20" fill="#f4d58d" stroke="#d4a574" stroke-width="2"/><circle cx="25" cy="25" r="10" fill="none" stroke="#d4a574" stroke-width="2"/><rect x="35" y="22" width="50" height="6" fill="#f4d58d" stroke="#d4a574" stroke-width="2"/><rect x="70" y="15" width="6" height="8" fill="#f4d58d"/><rect x="78" y="15" width="6" height="8" fill="#f4d58d"/></svg>
+<a class="btn" id="b1">Tap to unlock Hubby's magical world...</a>
+</div>
+</div>
+
+<!-- STAGE 2: QUIZ -->
+<div class="stage" id="s2">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1.5rem">❤️ Ek Sawal ❤️</p>
+<p class="txt">Duniya mein meri Qandeel se sabse zyada mohabbat kaun karta hai?</p>
+<div class="quiz">
+<div class="opt" data-ans="wrong">A) Saari Kainaat</div>
+<div class="opt" data-ans="wrong">B) Aasmaan ke Sitaray</div>
+<div class="opt" data-ans="correct">C) Aapka Hubby Shafeeq</div>
+<p class="txt" id="qf" style="margin-top:1rem;color:#ff69b4;opacity:0;transition:opacity .5s"></p>
+</div>
+<a class="btn" id="b2">Continue the journey... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 3: SUKOON STARDUST BRUSH -->
+<div class="stage" id="s3">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1rem">✨ Sukoon Ka Aasmaan ✨</p>
+<p class="txt">Jaan, agar thak gaeen ho ya meri yaad aa rahi hai, to is khali aasmaan par apni ungli se kuch bhi banayein...<br><br>Draw with your finger and feel the magic!</p>
+<canvas id="drawCanvas" class="draw-canvas"></canvas>
+<p class="txt" style="font-size:.9rem;color:rgba(244,213,141,.7)">Tap "Clear" to start fresh</p>
+<button class="btn" id="clearDraw" style="margin-top:.5rem;padding:.7rem 1.5rem">Clear Canvas</button>
+<a class="btn" id="b3">Continue to next surprise... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 4: MOON -->
+<div class="stage" id="s4">
+<div class="card">
+<p class="txt">Look at this moon, Qandeel jaan.<br>Tap it and close your eyes...</p>
+<div class="moon" id="moon"></div>
+<p class="txt" id="moonTxt" style="opacity:0;transition:opacity 2s">Right now, I am holding your hand tightly. We are looking at the exact same moon together.<br><br>Hum physically alag hain, par spiritually? We are one. InshaAllah very soon, we'll be together.</p>
+<a class="btn" id="b4">Accept Hubby's promises... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 5: FLOWER PETAL PLUCK -->
+<div class="stage" id="s5">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1rem">🌸 He Loves Me Game 🌸</p>
+<p class="txt">Bachpan mein phool ki pankhriyan tor kar check karte thay na?<br><br>Aaj apna naseeb check karein... Tap each petal!</p>
+<div class="flower" id="flower">
+<div class="petal" data-p="0" style="transform:rotate(0deg) translateY(-70px)"></div>
+<div class="petal" data-p="1" style="transform:rotate(51deg) translateY(-70px)"></div>
+<div class="petal" data-p="2" style="transform:rotate(102deg) translateY(-70px)"></div>
+<div class="petal" data-p="3" style="transform:rotate(153deg) translateY(-70px)"></div>
+<div class="petal" data-p="4" style="transform:rotate(204deg) translateY(-70px)"></div>
+<div class="petal" data-p="5" style="transform:rotate(255deg) translateY(-70px)"></div>
+<div class="petal" data-p="6" style="transform:rotate(306deg) translateY(-70px)"></div>
+<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:#f4d58d;border-radius:50%;box-shadow:0 0 20px rgba(244,213,141,.8)"></div>
+</div>
+<p class="petal-msg" id="petalMsg"></p>
+<a class="btn" id="b5">Unlock the next chapter... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 6: PASSWORD -->
+<div class="stage" id="s6">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1.5rem">🔐 Dilon Ka Darwaza 🔐</p>
+<p class="txt">Apne Hubby ka woh naam likhein jo aapke dil ke sabse paas hai.</p>
+<svg class="safe" id="safe" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="50" fill="#8b4513" stroke="#654321" stroke-width="2" rx="5"/><circle cx="50" cy="55" r="12" fill="#f4d58d" stroke="#d4a574" stroke-width="2"/><circle cx="50" cy="55" r="6" fill="#d4a574"/><rect x="48" y="55" width="4" height="15" fill="#d4a574"/></svg>
+<input type="text" class="input" id="passInput" placeholder="Type here..." autocomplete="off">
+<p class="txt" id="passHint" style="color:#ff6b6b;opacity:0;transition:opacity .5s"></p>
+<p class="skip" id="skipPass">💛 Skip (if you used a different pet name)</p>
+<a class="btn" id="b6">Unlock...</a>
+</div>
+</div>
+
+<!-- STAGE 7: DESTINY WHEEL -->
+<div class="stage" id="s7">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1rem">🎡 Future Destiny Wheel 🎡</p>
+<p class="txt">Spin the wheel to see your beautiful future with Hubby!<br><br>You can spin unlimited times!</p>
+<div class="wheel-container">
+<div class="wheel" id="wheel">
+<div class="wheel-segment" style="background:#ff6b9d;transform:rotate(0deg)"></div>
+<div class="wheel-segment" style="background:#c44569;transform:rotate(60deg)"></div>
+<div class="wheel-segment" style="background:#f4a460;transform:rotate(120deg)"></div>
+<div class="wheel-segment" style="background:#f4d58d;transform:rotate(180deg)"></div>
+<div class="wheel-segment" style="background:#d4a574;transform:rotate(240deg)"></div>
+<div class="wheel-segment" style="background:#ff8c94;transform:rotate(300deg)"></div>
+</div>
+<div class="spin-btn" id="spinBtn">SPIN</div>
+</div>
+<div class="modal" id="wheelModal">
+<p class="txt" id="wheelResult" style="font-size:1.2rem;color:#f4d58d"></p>
+<button class="btn" id="closeModal" style="margin-top:1rem">Close</button>
+</div>
+<a class="btn" id="b7">Continue the magic... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 8: HENNA -->
+<div class="stage" id="s8">
+<div class="card">
+<p class="txt">Tap and hold your name to see Shafeeq's heartbeat...</p>
+<div class="henna" id="henna">Qandeel</div>
+<p class="txt" id="hennaTxt" style="opacity:0;margin-top:1.5rem;transition:opacity 2s">Yeh mehndi ka rang jo aaj aapke hathon par hai, yeh gawah hai hamari pakiza mohabbat ka.<br><br>InshaAllah bhot jald, mere naam ka asli gehra rang aapke hathon par hamesha ke liye sajega.</p>
+<a class="btn" id="b8">Continue... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 9: POP THE WORRIES -->
+<div class="stage" id="s9">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1rem">🎈 Pop The Worries Game 🎈</p>
+<p class="txt">Tap the balloons to destroy your worries!<br><br>Aapki har pareshani ko aapka Hubby aise hi mita dega, jaan.</p>
+<div class="balloon-container" id="balloonContainer"></div>
+<p class="counter" id="worryCounter">Worries Destroyed: 0</p>
+<a class="btn" id="b9">See Hubby's precious gift... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 10: DIAMOND RING -->
+<div class="stage" id="s10">
+<div class="card">
+<p class="txt" style="font-size:1.25rem;color:#d4a574;margin-bottom:1.5rem">💎 Hubby ka Tohfa 💎</p>
+<p class="txt">Tap the gift box to unlock it...</p>
+<svg class="gift" id="gift" viewBox="0 0 100 100"><rect x="20" y="40" width="60" height="50" fill="#8b4513" stroke="#654321" stroke-width="2"/><rect x="15" y="30" width="70" height="15" fill="#d4a574" stroke="#b8860b" stroke-width="2"/><rect x="47" y="20" width="6" height="20" fill="#f4d58d"/><path d="M50,20 L35,30 L50,30 Z" fill="#f4d58d"/><path d="M50,20 L65,30 L50,30 Z" fill="#f4d58d"/></svg>
+<svg class="ring" id="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="none" stroke="#c0c0c0" stroke-width="3"/><polygon points="50,25 45,35 55,35" fill="#fff" stroke="#e0e0e0" stroke-width="1"/><polygon points="45,35 50,45 55,35" fill="#f0f0f0" stroke="#d0d0d0" stroke-width="1"/><circle cx="50" cy="32" r="3" fill="#fff" opacity=".9"><animate attributeName="opacity" values=".9;1;.9" dur="1s" repeatCount="indefinite"/></circle></svg>
+<p class="txt" id="ringTxt" style="opacity:0;margin-top:1.5rem;transition:opacity 1.5s">Yeh ring sirf ek digital picture nahi hai jaan, yeh mere dil ka pakiza waada hai.<br><br>InshaAllah bhot jald, aapka Hubby aapki ungli mein asli heere ki angoothi pehnayega.</p>
+<a class="btn" id="b10">Read final letter... Tap here</a>
+</div>
+</div>
+
+<!-- STAGE 11: FINAL LETTER -->
+<div class="stage" id="s11">
+<div class="countdown" id="countdown">00:00:00</div>
+<div class="card">
+<p class="txt" style="font-size:1.3rem;color:#d4a574;margin-bottom:1.5rem">The Last Separate Chand Raat</p>
+<p class="txt" style="text-align:left;line-height:2">Qandeel, meri jaan...<br><br>This is the last Chand Raat we spend apart. InshaAllah, agli Chand Raat ko hum sath honge.<br><br>Har roz hum baat karte hain, aapki awaaz sunne ko milti hai. Par main chahta hoon ki bhot jald yeh awaaz mere paas se aaye.<br><br>I promise you, my beautiful wife, that every day of waiting will be worth it. InshaAllah jab hum milenge, us din aapko samajh aayega ki yeh sab wait... it was all leading to our forever.<br><br>Chand Raat Mubarak to my permanent wife, my queen, my everything.<br><br>Hamesha aapka, Your Hubby Shafeeq ❤️</p>
+<div class="final-heart" id="finalHeart">Shafeeq ❤️ Qandeel<br><span style="font-size:1.1rem;display:block;margin-top:.8rem">Hamesha Ke Liye</span></div>
+<p class="txt" style="margin-top:2rem">Tap the heart above to celebrate with stars...</p>
+</div>
+</div>
+<script>
+const c=document.getElementById('canvas'),ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+const stars=[],particles=[];
+class Star{constructor(){this.reset()}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.size=Math.random()*2.5;this.speed=Math.random()*.3;this.opacity=Math.random()*.5+.5}update(){this.y+=this.speed;if(this.y>c.height){this.y=0;this.x=Math.random()*c.width}}draw(){ctx.fillStyle=`rgba(255,255,255,${this.opacity})`;ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill()}}
+class Particle{constructor(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.size=Math.random()*3+1;this.speedX=(Math.random()-.5)*.5;this.speedY=Math.random()*.5;this.opacity=Math.random()*.3+.2}update(){this.x+=this.speedX;this.y+=this.speedY;if(this.y>c.height)this.y=0;if(this.x>c.width)this.x=0;if(this.x<0)this.x=c.width}draw(){ctx.fillStyle=`rgba(244,213,141,${this.opacity})`;ctx.shadowBlur=15;ctx.shadowColor='rgba(244,213,141,.8)';ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}}
+for(let i=0;i<120;i++)stars.push(new Star());for(let i=0;i<25;i++)particles.push(new Particle());
+function animate(){ctx.fillStyle='rgba(10,14,39,.15)';ctx.fillRect(0,0,c.width,c.height);stars.forEach(s=>{s.update();s.draw()});particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animate)}animate();
+addEventListener('resize',()=>{c.width=innerWidth;c.height=innerHeight});
+function createButterfly(){const b=document.createElement('div');b.className='butterfly';b.textContent=Math.random()>.5?'🦋':'✨';b.style.left=Math.random()*100+'%';b.style.top=Math.random()*100+'%';b.style.animationDelay=Math.random()*5+'s';b.style.animationDuration=(Math.random()*5+8)+'s';document.body.appendChild(b);setTimeout(()=>b.remove(),15000)}
+for(let i=0;i<8;i++)createButterfly();setInterval(createButterfly,3000);
+document.addEventListener('touchmove',e=>{const t=e.touches[0];createTouchFly(t.clientX,t.clientY)});
+document.addEventListener('mousemove',e=>{if(Math.random()>.9)createTouchFly(e.clientX,e.clientY)});
+function createTouchFly(x,y){const f=document.createElement('div');f.className='touch-fly';f.textContent=Math.random()>.5?'🦋':'✨';f.style.left=x+'px';f.style.top=y+'px';f.style.fontSize=(Math.random()*10+15)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1500)}
+let cur=1;function go(n){const curr=document.getElementById(`s${cur}`),next=document.getElementById(`s${n}`);curr.style.opacity='0';setTimeout(()=>{curr.classList.remove('active');next.classList.add('active');setTimeout(()=>{next.style.opacity='1';cur=n},100)},1000)}
+document.getElementById('b1').onclick=()=>{document.getElementById('shimmer').classList.add('active');setTimeout(()=>{document.getElementById('shimmer').classList.remove('active');go(2)},1500)};
+document.getElementById('key').onclick=()=>document.getElementById('b1').click();
+const qOpts=document.querySelectorAll('.opt'),qf=document.getElementById('qf');let qAns=false;
+qOpts.forEach(o=>o.onclick=function(){if(qAns)return;const a=this.getAttribute('data-ans');if(a==='wrong'){qf.textContent='❌ Galt jawab! Dobara socho...';qf.style.opacity='1';setTimeout(()=>qf.style.opacity='0',2000)}else{qAns=true;this.classList.add('correct');qf.textContent='✅ 100% Right! Aapka Shafeeq aapse bhot zyada pyar karta hai!';qf.style.opacity='1';for(let i=0;i<20;i++){setTimeout(()=>{const h=document.createElement('div');h.className='burst';h.textContent=Math.random()>.5?'❤️':'🦋';h.style.left=Math.random()*100+'%';h.style.top=Math.random()*100+'%';h.style.fontSize=(Math.random()*20+25)+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),2000)},i*100)}}});
+document.getElementById('b2').onclick=()=>go(3);
+const drawCanvas=document.getElementById('drawCanvas'),drawCtx=drawCanvas.getContext('2d');drawCanvas.width=drawCanvas.offsetWidth;drawCanvas.height=drawCanvas.offsetHeight;
+let drawing=false,particles2=[];
+class DrawParticle{constructor(x,y){this.x=x;this.y=y;this.size=Math.random()*4+2;this.speedX=(Math.random()-.5)*2;this.speedY=(Math.random()-.5)*2;this.life=1;this.color=Math.random()>.5?'#ff69b4':'#f4d58d'}update(){this.x+=this.speedX;this.y+=this.speedY;this.life-=.02;this.speedY+=.1}draw(){drawCtx.globalAlpha=this.life;drawCtx.fillStyle=this.color;drawCtx.shadowBlur=20;drawCtx.shadowColor=this.color;drawCtx.beginPath();drawCtx.arc(this.x,this.y,this.size,0,Math.PI*2);drawCtx.fill();drawCtx.shadowBlur=0;drawCtx.globalAlpha=1}}
+function animateDraw(){drawCtx.fillStyle='rgba(0,0,0,.1)';drawCtx.fillRect(0,0,drawCanvas.width,drawCanvas.height);particles2=particles2.filter(p=>{p.update();p.draw();return p.life>0});requestAnimationFrame(animateDraw)}animateDraw();
+drawCanvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true});
+drawCanvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const rect=drawCanvas.getBoundingClientRect(),touch=e.touches[0],x=touch.clientX-rect.left,y=touch.clientY-rect.top;for(let i=0;i<5;i++)particles2.push(new DrawParticle(x,y))});
+drawCanvas.addEventListener('touchend',()=>drawing=false);
+drawCanvas.addEventListener('mousedown',()=>drawing=true);
+drawCanvas.addEventListener('mousemove',e=>{if(!drawing)return;const rect=drawCanvas.getBoundingClientRect(),x=e.clientX-rect.left,y=e.clientY-rect.top;for(let i=0;i<5;i++)particles2.push(new DrawParticle(x,y))});
+drawCanvas.addEventListener('mouseup',()=>drawing=false);
+document.getElementById('clearDraw').onclick=()=>{drawCtx.fillStyle='#000';drawCtx.fillRect(0,0,drawCanvas.width,drawCanvas.height);particles2=[]};
+document.getElementById('b3').onclick=()=>go(4);
+let moonTap=false;document.getElementById('moon').onclick=()=>{if(moonTap)return;moonTap=true;document.getElementById('moonTxt').style.opacity='1'};
+document.getElementById('b4').onclick=()=>go(5);
+const petalMsgs=["Shafeeq loves you...","...Bhot zyada!","...Hadd se zyada!","...Apni jaan se bhi zyada!","...Dunya mein sab se zyada!","...Aapki soch se bhi zyada!","...HAMESHA KE LIYE!"];
+let petalCount=0;
+document.querySelectorAll('.petal').forEach((p,i)=>p.onclick=function(){if(p.style.opacity==='0')return;p.style.transform=p.style.transform+' scale(0)';p.style.opacity='0';document.getElementById('petalMsg').textContent=petalMsgs[i];const fly=document.createElement('div');fly.className='burst';fly.textContent='🦋';fly.style.left=p.getBoundingClientRect().left+'px';fly.style.top=p.getBoundingClientRect().top+'px';fly.style.fontSize='25px';document.body.appendChild(fly);setTimeout(()=>fly.remove(),2000);petalCount++;if(petalCount===7){setTimeout(()=>{for(let j=0;j<50;j++){setTimeout(()=>{const petal=document.createElement('div');petal.className='burst';petal.textContent='🌸';petal.style.left=Math.random()*100+'%';petal.style.top=Math.random()*100+'%';petal.style.fontSize=(Math.random()*20+20)+'px';document.body.appendChild(petal);setTimeout(()=>petal.remove(),2000)},j*50)}},500)}});
+document.getElementById('b5').onclick=()=>go(6);
+const passInput=document.getElementById('passInput'),passHint=document.getElementById('passHint'),safe=document.getElementById('safe');
+document.getElementById('b6').onclick=()=>{const val=passInput.value.toLowerCase().trim();if(val==='shafeeq'||val==='hubby'){safe.classList.add('unlock');setTimeout(()=>go(7),1500)}else{passHint.textContent='Try "Shafeeq" or "Hubby" 💛';passHint.style.opacity='1';setTimeout(()=>passHint.style.opacity='0',2000)}};
+document.getElementById('skipPass').onclick=()=>{safe.classList.add('unlock');setTimeout(()=>go(7),1500)};
+const wheel=document.getElementById('wheel'),spinBtn=document.getElementById('spinBtn'),wheelModal=document.getElementById('wheelModal'),wheelResult=document.getElementById('wheelResult');
+const prizes=["✨ Shafeeq ke sath hamari pehli dinner date!","🏡 Hamare apne ghar ki haseen subah!","🚗 Midnight drive jab aapka haath mere haath mein hoga!","🛍️ Shadi ki dhero haseen shopping!","☕ Baarish mein sath baith kar chai peena!","💍 Woh din jab main aapko propose karunga!"];
+let spinning=false;
+spinBtn.onclick=()=>{if(spinning)return;spinning=true;const spins=Math.floor(Math.random()*5+5)*360,finalAngle=Math.floor(Math.random()*360);wheel.style.transform=`rotate(${spins+finalAngle}deg)`;setTimeout(()=>{const index=Math.floor(Math.random()*prizes.length);wheelResult.textContent=prizes[index];wheelModal.classList.add('show');spinning=false;wheel.style.transform='rotate(0deg)'},3000)};
+document.getElementById('closeModal').onclick=()=>wheelModal.classList.remove('show');
+document.getElementById('b7').onclick=()=>go(8);
+let hennaPress=false;const henna=document.getElementById('henna'),hennaTxt=document.getElementById('hennaTxt');
+henna.onclick=()=>{if(hennaPress)return;hennaPress=true;henna.classList.add('pulsing');if('vibrate' in navigator)navigator.vibrate([120,60,120,60,120,60,120]);setTimeout(()=>{henna.classList.remove('pulsing');hennaTxt.style.opacity='1'},3500)};
+document.getElementById('b8').onclick=()=>go(9);
+const balloonContainer=document.getElementById('balloonContainer'),worryCounter=document.getElementById('worryCounter');
+let worryCount=0;
+const worries=['Faslay','Garmi','Udasi','Tension','Dooriyan'];
+const colors=['#ff6b9d','#c44569','#f4a460','#f4d58d','#ff8c94'];
+function createBalloon(){const b=document.createElement('div');b.className='balloon';b.textContent=worries[Math.floor(Math.random()*worries.length)];b.style.background=colors[Math.floor(Math.random()*colors.length)];b.style.left=Math.random()*80+'%';b.style.animationDuration=(Math.random()*3+6)+'s';b.style.animationDelay=Math.random()*2+'s';balloonContainer.appendChild(b);b.onclick=()=>{b.style.animation='none';b.style.transform='scale(0)';worryCount++;worryCounter.textContent=`Worries Destroyed: ${worryCount}`;const heart=document.createElement('div');heart.className='burst';heart.textContent='❤️';heart.style.left=b.getBoundingClientRect().left+'px';heart.style.top=b.getBoundingClientRect().top+'px';heart.style.fontSize='20px';document.body.appendChild(heart);setTimeout(()=>{heart.remove();b.remove()},500)};setTimeout(()=>b.remove(),10000)}
+setInterval(createBalloon,1500);for(let i=0;i<5;i++)setTimeout(createBalloon,i*300);
+document.getElementById('b9').onclick=()=>go(10);
+const gift=document.getElementById('gift'),ring=document.getElementById('ring'),ringTxt=document.getElementById('ringTxt');let giftOpen=false;
+gift.onclick=()=>{if(giftOpen)return;giftOpen=true;gift.classList.add('opening');setTimeout(()=>{ring.classList.add('visible');setTimeout(()=>ringTxt.style.opacity='1',1000)},1500)};
+document.getElementById('b10').onclick=()=>{go(11);startCountdown()};
+function startCountdown(){const cd=document.getElementById('countdown');function update(){const now=new Date(),eid=new Date('2026-05-27T06:00:00'),diff=eid-now;if(diff>0){const h=Math.floor(diff/(1000*60*60)),m=Math.floor((diff%(1000*60*60))/(1000*60)),s=Math.floor((diff%(1000*60))/1000);cd.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}else cd.textContent='Eid Mubarak! ✨'}update();setInterval(update,1000)}
+const finalHeart=document.getElementById('finalHeart');let confActive=false;
+function createConf(){const cf=document.createElement('div');cf.style.position='fixed';cf.style.left=Math.random()*100+'%';cf.style.top='-20px';cf.style.fontSize=Math.random()*25+18+'px';cf.style.zIndex='9999';cf.style.pointerEvents='none';const emojis=['⭐','✨','❤️','💛','🌟','💫','🦋'];cf.textContent=emojis[Math.floor(Math.random()*emojis.length)];document.body.appendChild(cf);const dur=Math.random()*3+2.5;cf.style.animation=`confFall ${dur}s linear forwards`;setTimeout(()=>cf.remove(),dur*1000)}
+const confStyle=document.createElement('style');confStyle.textContent='@keyframes confFall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}';document.head.appendChild(confStyle);
+finalHeart.onclick=()=>{if(confActive)return;confActive=true;const int=setInterval(()=>{createConf();createConf();createConf();createConf()},80);setTimeout(()=>{clearInterval(int);confActive=false},6000)};
+</script>
+</body>
+</html>
