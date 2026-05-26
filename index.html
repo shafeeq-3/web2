@@ -113,29 +113,42 @@ animation:float 3s ease-in-out infinite;
 50%{transform:translateY(-20px) rotate(10deg)}
 }
 /* Quiz Styles */
-.quiz-option{
-background:rgba(255,215,0,0.1);
-border:2px solid rgba(255,215,0,0.4);
-border-radius:20px;
-padding:1rem;
-margin:0.8rem 0;
+.heart-card{
+background:linear-gradient(135deg,rgba(255,105,180,0.3),rgba(255,215,0,0.3));
+border:3px solid rgba(255,215,0,0.5);
+border-radius:15px;
+padding:1.5rem 0.5rem;
 cursor:pointer;
 transition:all 0.3s;
 text-align:center;
-font-size:1rem;
+font-size:2rem;
+min-height:80px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
-.quiz-option:active{
-transform:scale(0.98);
+.heart-card:active{
+transform:scale(0.95);
 }
-.quiz-option.correct{
+.heart-card.flipped{
 background:linear-gradient(135deg,#ffd700,#ffed4e);
-color:#000;
 border-color:#ffd700;
-animation:pulse 0.5s ease;
+animation:flip 0.5s ease;
 }
-@keyframes pulse{
+.heart-card.matched{
+background:linear-gradient(135deg,#00ff00,#00cc00);
+border-color:#00ff00;
+animation:match 0.5s ease;
+pointer-events:none;
+}
+@keyframes flip{
+0%{transform:rotateY(0deg)}
+50%{transform:rotateY(90deg)}
+100%{transform:rotateY(0deg)}
+}
+@keyframes match{
 0%,100%{transform:scale(1)}
-50%{transform:scale(1.05)}
+50%{transform:scale(1.15)}
 }
 /* Canvas Drawing */
 .draw-canvas{
@@ -147,6 +160,7 @@ margin:1.5rem 0;
 border:3px solid rgba(255,215,0,0.5);
 cursor:crosshair;
 touch-action:none;
+display:block;
 }
 /* Moon */
 .moon{
@@ -286,45 +300,54 @@ box-shadow:0 0 60px rgba(255,215,0,0.6);
 transform:translate(-50%,-50%) scale(1);
 opacity:1;
 }
-/* Balloons */
-.balloon-game{
+/* Golden Eggs Game */
+.egg-game{
 position:relative;
 width:100%;
 height:350px;
-background:rgba(0,0,0,0.3);
+background:linear-gradient(135deg,rgba(139,69,19,0.3),rgba(101,67,33,0.3));
 border-radius:20px;
 margin:1.5rem 0;
 overflow:hidden;
-border:2px solid rgba(255,215,0,0.3);
+border:3px solid rgba(255,215,0,0.4);
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+padding:1rem;
+gap:1rem;
 }
-.balloon{
-position:absolute;
-width:60px;
-height:75px;
+.golden-egg{
+width:70px;
+height:85px;
+background:linear-gradient(135deg,#ffd700,#ffed4e,#ffd700);
 border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
 cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:0.75rem;
-color:#fff;
-font-weight:600;
-text-align:center;
-padding:0.5rem;
-box-shadow:inset -10px -10px 20px rgba(0,0,0,0.3);
-animation:rise 6s linear forwards;
+font-size:2rem;
+box-shadow:0 10px 30px rgba(255,215,0,0.6),inset -5px -5px 15px rgba(184,134,11,0.5);
+transition:all 0.3s;
+animation:eggShine 2s ease-in-out infinite;
+position:relative;
 }
-@keyframes rise{
-0%{transform:translateY(0) translateX(0)}
-100%{transform:translateY(-400px) translateX(var(--drift))}
+.golden-egg:active{
+transform:scale(0.95);
 }
-.balloon.pop{
-animation:popBalloon 0.3s ease forwards;
+.golden-egg.cracked{
+animation:crackEgg 0.6s ease forwards;
 }
-@keyframes popBalloon{
-0%{transform:scale(1)}
-50%{transform:scale(1.3)}
-100%{transform:scale(0);opacity:0}
+@keyframes eggShine{
+0%,100%{box-shadow:0 10px 30px rgba(255,215,0,0.6),inset -5px -5px 15px rgba(184,134,11,0.5)}
+50%{box-shadow:0 10px 40px rgba(255,215,0,0.9),inset -5px -5px 20px rgba(184,134,11,0.7)}
+}
+@keyframes crackEgg{
+0%{transform:scale(1) rotate(0deg)}
+25%{transform:scale(1.1) rotate(-10deg)}
+50%{transform:scale(1.1) rotate(10deg)}
+75%{transform:scale(1.2) rotate(-5deg)}
+100%{transform:scale(0) rotate(180deg);opacity:0}
 }
 .worry-counter{
 text-align:center;
@@ -333,11 +356,38 @@ color:#ffd700;
 font-weight:600;
 margin-top:1rem;
 }
+.surprise-message{
+text-align:center;
+font-size:1.1rem;
+color:#ff69b4;
+font-weight:600;
+margin-top:1rem;
+min-height:60px;
+line-height:1.6;
+text-shadow:0 0 10px rgba(255,105,180,0.6);
+}
 /* Password Lock */
+.code-input{
+width:60px;
+height:70px;
+background:rgba(0,0,0,0.5);
+border:3px solid rgba(255,215,0,0.5);
+border-radius:15px;
+color:#ffd700;
+font-size:2rem;
+text-align:center;
+font-family:'Poppins',sans-serif;
+font-weight:bold;
+}
+.code-input:focus{
+outline:none;
+border-color:#ffd700;
+box-shadow:0 0 20px rgba(255,215,0,0.5);
+}
 .lock-icon{
 width:100px;
 height:100px;
-margin:2rem auto;
+margin:1rem auto;
 filter:drop-shadow(0 0 30px rgba(255,215,0,0.8));
 animation:shake 2s ease-in-out infinite;
 }
@@ -346,22 +396,13 @@ animation:shake 2s ease-in-out infinite;
 25%{transform:rotate(-5deg)}
 75%{transform:rotate(5deg)}
 }
-.password-input{
-width:100%;
-padding:1rem;
-margin:1rem 0;
-background:rgba(0,0,0,0.5);
-border:2px solid rgba(255,215,0,0.5);
-border-radius:50px;
-color:#ffd700;
-font-size:1.1rem;
-text-align:center;
-font-family:'Poppins',sans-serif;
+.lock-icon.unlocked{
+animation:unlock 1s ease forwards;
 }
-.password-input:focus{
-outline:none;
-border-color:#ffd700;
-box-shadow:0 0 20px rgba(255,215,0,0.5);
+@keyframes unlock{
+0%{transform:scale(1) rotate(0deg)}
+50%{transform:scale(1.2) rotate(20deg)}
+100%{transform:scale(0) rotate(360deg);opacity:0}
 }
 .skip-link{
 text-align:center;
@@ -499,18 +540,24 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 </div>
 </div>
 
-<!-- STAGE 2: QUIZ -->
+<!-- STAGE 2: HEART MATCHING GAME -->
 <div class="stage" id="stage2">
 <div class="card">
-<div class="title">❤️ Ek Sawal ❤️</div>
-<p class="txt">Duniya mein meri Qandeel se sabse zyada mohabbat kaun karta hai?</p>
-<div style="margin:2rem 0">
-<div class="quiz-option" onclick="wrongAnswer(this)">A) Saari Kainaat</div>
-<div class="quiz-option" onclick="wrongAnswer(this)">B) Aasmaan ke Sitaray</div>
-<div class="quiz-option" onclick="correctAnswer(this)">C) Aapka Hubby Shafeeq</div>
+<div class="title">💕 Find The Matching Hearts 💕</div>
+<p class="txt">Qandeel jaan, yeh 8 hearts hain. Tap karein aur matching pairs dhundein!</p>
+<p class="txt" style="font-size:0.95rem">Jab sab pairs mil jayenge, aapke liye ek special message unlock hoga!</p>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin:2rem 0" id="heartGrid">
+<div class="heart-card" onclick="flipCard(this,0)">❓</div>
+<div class="heart-card" onclick="flipCard(this,1)">❓</div>
+<div class="heart-card" onclick="flipCard(this,2)">❓</div>
+<div class="heart-card" onclick="flipCard(this,3)">❓</div>
+<div class="heart-card" onclick="flipCard(this,4)">❓</div>
+<div class="heart-card" onclick="flipCard(this,5)">❓</div>
+<div class="heart-card" onclick="flipCard(this,6)">❓</div>
+<div class="heart-card" onclick="flipCard(this,7)">❓</div>
 </div>
-<p class="txt" id="quizFeedback" style="color:#ff69b4;min-height:30px"></p>
-<button class="btn" id="quizNext" style="display:none" onclick="goToStage(3)">Continue the journey ✨</button>
+<p class="txt" id="matchFeedback" style="color:#ff69b4;min-height:30px"></p>
+<button class="btn" id="matchNext" style="display:none" onclick="goToStage(3)">Continue the journey ✨</button>
 </div>
 </div>
 
@@ -520,7 +567,7 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 <div class="title">✨ Sukoon Ka Aasmaan ✨</div>
 <p class="txt">Jaan, agar thak gaeen ho ya meri yaad aa rahi hai, to is khali aasmaan par apni ungli se kuch bhi banayein...</p>
 <p class="txt" style="font-size:0.95rem">Draw with your finger and feel the magic!</p>
-<canvas id="drawCanvas" class="draw-canvas"></canvas>
+<canvas id="drawCanvas" class="draw-canvas" width="400" height="300"></canvas>
 <button class="btn" onclick="clearCanvas()" style="background:rgba(255,215,0,0.2);color:#ffd700;margin-top:0.5rem">Clear Canvas</button>
 <button class="btn" onclick="goToStage(4)">Continue to next surprise ✨</button>
 </div>
@@ -558,20 +605,29 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 </div>
 </div>
 
-<!-- STAGE 6: PASSWORD -->
+<!-- STAGE 6: LOVE LOCK PUZZLE -->
 <div class="stage" id="stage6">
 <div class="card">
-<div class="title">🔐 Dilon Ka Darwaza 🔐</div>
-<p class="txt">Apne Hubby ka woh naam likhein jo aapke dil ke sabse paas hai.</p>
-<svg class="lock-icon" viewBox="0 0 100 100">
+<div class="title">🔐 Love Lock Puzzle 🔐</div>
+<p class="txt">Qandeel jaan, yeh 4-digit love code hai!</p>
+<p class="txt" style="font-size:0.95rem">Hint: Hamare pyar ki shuruat ka mahina aur din (MMDD format)</p>
+<p class="txt" style="font-size:0.85rem;color:rgba(255,215,0,0.6)">Example: Agar January 15 hai to 0115</p>
+<div style="margin:2rem 0">
+<div style="display:flex;justify-content:center;gap:0.5rem;margin-bottom:2rem">
+<input type="tel" maxlength="1" class="code-input" id="code1" oninput="moveToNext(this,1)">
+<input type="tel" maxlength="1" class="code-input" id="code2" oninput="moveToNext(this,2)">
+<input type="tel" maxlength="1" class="code-input" id="code3" oninput="moveToNext(this,3)">
+<input type="tel" maxlength="1" class="code-input" id="code4" oninput="moveToNext(this,4)">
+</div>
+<svg class="lock-icon" viewBox="0 0 100 100" id="lockIcon">
 <rect x="20" y="40" width="60" height="45" fill="#ffd700" stroke="#b8860b" stroke-width="2" rx="5"/>
 <path d="M 35 40 L 35 25 Q 35 10 50 10 Q 65 10 65 25 L 65 40" fill="none" stroke="#ffd700" stroke-width="6"/>
 <circle cx="50" cy="62" r="8" fill="#b8860b"/>
 </svg>
-<input type="text" class="password-input" id="passwordInput" placeholder="Type here..." autocomplete="off">
-<p class="txt" id="passwordHint" style="color:#ff6b6b;min-height:25px"></p>
-<button class="btn" onclick="checkPassword()">Unlock 🔓</button>
-<p class="skip-link" onclick="skipPassword()">💛 Skip (if you used a different pet name)</p>
+</div>
+<p class="txt" id="lockHint" style="color:#ff6b6b;min-height:25px"></p>
+<button class="btn" onclick="checkLoveCode()">Unlock 🔓</button>
+<p class="skip-link" onclick="skipLock()">💛 Skip (yaad nahi aa raha?)</p>
 </div>
 </div>
 
@@ -605,20 +661,59 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 </div>
 </div>
 
-<!-- STAGE 9: BALLOON GAME -->
+<!-- STAGE 9: GOLDEN EGGS GAME -->
 <div class="stage" id="stage9">
 <div class="card">
-<div class="title">🎈 Pop The Worries 🎈</div>
-<p class="txt">Tap the balloons to destroy your worries!</p>
-<p class="txt" style="font-size:0.95rem">Aapki har pareshani ko aapka Hubby aise hi mita dega, jaan.</p>
-<div class="balloon-game" id="balloonGame"></div>
-<p class="worry-counter" id="worryCounter">Worries Destroyed: 0</p>
+<div class="title">🥚 Golden Surprise Eggs 🥚</div>
+<p class="txt">Qandeel jaan, yeh 9 golden eggs hain!</p>
+<p class="txt" style="font-size:0.95rem">Har egg mein Hubby ka ek surprise message hai. Tap karein aur dekhein!</p>
+<div class="egg-game" id="eggGame">
+<div class="golden-egg" onclick="crackEgg(this,0)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,1)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,2)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,3)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,4)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,5)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,6)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,7)">🥚</div>
+<div class="golden-egg" onclick="crackEgg(this,8)">🥚</div>
+</div>
+<p class="surprise-message" id="eggMessage"></p>
+<p class="worry-counter" id="eggCounter">Eggs Cracked: 0/9</p>
 <button class="btn" onclick="goToStage(10)">See Hubby's precious gift ✨</button>
 </div>
 </div>
 
-<!-- STAGE 10: DIAMOND RING -->
+<!-- STAGE 10: VIRTUAL HUG -->
 <div class="stage" id="stage10">
+<div class="card">
+<div class="title">🤗 Virtual Hug 🤗</div>
+<p class="txt">Faslay bhot hain wifey, par mera dil aapke paas hai...</p>
+<p class="txt" style="font-size:0.95rem">Press and hold the heart below to receive Hubby's warmest, tightest virtual hug right now.</p>
+<div style="margin:3rem 0;text-align:center">
+<div id="hugHeart" ontouchstart="startHug()" ontouchend="endHug()" onmousedown="startHug()" onmouseup="endHug()" style="font-size:6rem;cursor:pointer;user-select:none;transition:all 0.3s">❤️</div>
+</div>
+<p class="txt" id="hugMessage" style="opacity:0;transition:opacity 1s;color:#ff69b4">Suno jaan, apni aankhein band karo aur sukoon mehsus karo. Aapka Hubby hamesha aapke sath khada hai, aapko apni baahon mein samete hue. 🤗💕</p>
+<button class="btn" onclick="goToStage(11)">Continue ✨</button>
+</div>
+</div>
+
+<!-- STAGE 11: SHOOTING STAR WISH -->
+<div class="stage" id="stage11">
+<div class="card">
+<div class="title">🌠 Shooting Star Wish 🌠</div>
+<p class="txt">Aankhein band karein, Qandeel jaan...</p>
+<p class="txt" style="font-size:0.95rem">Hamare hamesha ke liye ek hone ki ek pyari si dua mangein, aur phir is toot-te taare par tap karein.</p>
+<div style="position:relative;width:100%;height:200px;background:rgba(0,0,0,0.5);border-radius:20px;margin:2rem 0;overflow:hidden;border:2px solid rgba(255,215,0,0.3)" id="starContainer">
+<div id="shootingStar" onclick="catchStar()" style="position:absolute;font-size:2rem;cursor:pointer;animation:shootStar 3s linear infinite">⭐</div>
+</div>
+<p class="txt" id="starMessage" style="opacity:0;transition:opacity 1s;color:#ffd700">Aapki maangi hui har dua ko qubool karwana, aapki har haseen khwahish ko poora karna, ab mere ishq ki zimmedari hai. Chand Raat Mubarak, meri duaon ka naseeb. 💫</p>
+<button class="btn" onclick="goToStage(12)">Continue ✨</button>
+</div>
+</div>
+
+<!-- STAGE 12: DIAMOND RING -->
+<div class="stage" id="stage12">
 <div class="card">
 <div class="title">💎 Hubby ka Tohfa 💎</div>
 <p class="txt">Tap the gift box to unlock it...</p>
@@ -638,12 +733,12 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 </circle>
 </svg>
 <p class="txt" id="ringMessage" style="opacity:0;transition:opacity 1s">Yeh ring sirf ek digital picture nahi hai jaan, yeh mere dil ka pakiza waada hai.<br><br>InshaAllah bhot jald, aapka Hubby aapki ungli mein asli heere ki angoothi pehnayega.</p>
-<button class="btn" onclick="goToStage(11)">Read final letter ✨</button>
+<button class="btn" onclick="goToStage(13)">Read final letter ✨</button>
 </div>
 </div>
 
-<!-- STAGE 11: FINAL LETTER -->
-<div class="stage" id="stage11">
+<!-- STAGE 13: FINAL LETTER -->
+<div class="stage" id="stage13">
 <div class="card">
 <div class="countdown" id="countdown">00:00:00:00</div>
 <div class="title">The Last Separate Chand Raat</div>
@@ -708,38 +803,67 @@ next.classList.add('active');
 setTimeout(()=>{
 next.style.opacity='1';
 currentStage=n;
-if(n===9)startBalloonGame();
-if(n===11)startCountdown();
+if(n===13)startCountdown();
 },100);
 },800);
 }
 
-// Quiz
-function wrongAnswer(el){
-el.style.background='rgba(255,0,0,0.3)';
-document.getElementById('quizFeedback').textContent='❌ Galt jawab! Dobara socho...';
-setTimeout(()=>{
-el.style.background='rgba(255,215,0,0.1)';
-document.getElementById('quizFeedback').textContent='';
-},1500);
+// Heart Matching Game
+const heartSymbols=['💖','💕','💗','💝'];
+const gameCards=[...heartSymbols,...heartSymbols].sort(()=>Math.random()-0.5);
+let flippedCards=[];
+let matchedPairs=0;
+
+function flipCard(el,index){
+if(el.classList.contains('flipped')||el.classList.contains('matched')||flippedCards.length===2)return;
+el.textContent=gameCards[index];
+el.classList.add('flipped');
+flippedCards.push({el,symbol:gameCards[index],index});
+if(flippedCards.length===2){
+setTimeout(checkMatch,800);
+}
 }
 
-function correctAnswer(el){
-el.classList.add('correct');
-document.getElementById('quizFeedback').textContent='✅ 100% Right! Aapka Shafeeq aapse bhot zyada pyar karta hai!';
-document.getElementById('quizNext').style.display='block';
-for(let i=0;i<30;i++){
+function checkMatch(){
+const[card1,card2]=flippedCards;
+if(card1.symbol===card2.symbol&&card1.index!==card2.index){
+card1.el.classList.add('matched');
+card2.el.classList.add('matched');
+matchedPairs++;
+document.getElementById('matchFeedback').textContent=`✅ Perfect Match! ${matchedPairs}/4`;
+for(let i=0;i<10;i++){
 setTimeout(()=>{
-createParticle('❤️',Math.random()*window.innerWidth,Math.random()*window.innerHeight);
+createParticle('❤️',card1.el.getBoundingClientRect().left+40,card1.el.getBoundingClientRect().top+40);
+createParticle('❤️',card2.el.getBoundingClientRect().left+40,card2.el.getBoundingClientRect().top+40);
 },i*50);
 }
+if(matchedPairs===4){
+setTimeout(()=>{
+document.getElementById('matchFeedback').textContent='🎉 Sab hearts match ho gaye! Aapka Hubby aapse bhot pyar karta hai! 🎉';
+document.getElementById('matchNext').style.display='block';
+for(let i=0;i<40;i++){
+setTimeout(()=>{
+createParticle(['❤️','💕','💖','💗'][Math.floor(Math.random()*4)],Math.random()*window.innerWidth,Math.random()*window.innerHeight);
+},i*50);
+}
+},500);
+}
+}else{
+card1.el.classList.remove('flipped');
+card2.el.classList.remove('flipped');
+card1.el.textContent='❓';
+card2.el.textContent='❓';
+document.getElementById('matchFeedback').textContent='❌ Try again!';
+setTimeout(()=>{
+document.getElementById('matchFeedback').textContent='';
+},1000);
+}
+flippedCards=[];
 }
 
 // Drawing Canvas
 const drawCanvas=document.getElementById('drawCanvas');
 const drawCtx=drawCanvas.getContext('2d');
-drawCanvas.width=drawCanvas.offsetWidth;
-drawCanvas.height=drawCanvas.offsetHeight;
 
 let isDrawing=false;
 const particles=[];
@@ -786,20 +910,22 @@ requestAnimationFrame(animateDraw);
 animateDraw();
 
 function startDrawing(e){
+e.preventDefault();
 isDrawing=true;
 draw(e);
 }
 
 function draw(e){
 if(!isDrawing)return;
+e.preventDefault();
 const rect=drawCanvas.getBoundingClientRect();
 let x,y;
 if(e.touches){
-x=e.touches[0].clientX-rect.left;
-y=e.touches[0].clientY-rect.top;
+x=(e.touches[0].clientX-rect.left)*(drawCanvas.width/rect.width);
+y=(e.touches[0].clientY-rect.top)*(drawCanvas.height/rect.height);
 }else{
-x=e.clientX-rect.left;
-y=e.clientY-rect.top;
+x=(e.clientX-rect.left)*(drawCanvas.width/rect.width);
+y=(e.clientY-rect.top)*(drawCanvas.height/rect.height);
 }
 for(let i=0;i<8;i++){
 particles.push(new DrawParticle(x,y));
@@ -810,8 +936,8 @@ function stopDrawing(){
 isDrawing=false;
 }
 
-drawCanvas.addEventListener('touchstart',startDrawing);
-drawCanvas.addEventListener('touchmove',draw);
+drawCanvas.addEventListener('touchstart',startDrawing,{passive:false});
+drawCanvas.addEventListener('touchmove',draw,{passive:false});
 drawCanvas.addEventListener('touchend',stopDrawing);
 drawCanvas.addEventListener('mousedown',startDrawing);
 drawCanvas.addEventListener('mousemove',draw);
@@ -860,23 +986,43 @@ createParticle('🌸',Math.random()*window.innerWidth,Math.random()*window.inner
 }
 }
 
-// Password
-function checkPassword(){
-const input=document.getElementById('passwordInput').value.toLowerCase().trim();
-if(input==='shafeeq'||input==='hubby'){
-document.getElementById('passwordHint').textContent='✅ Correct! Unlocking...';
-document.getElementById('passwordHint').style.color='#00ff00';
-setTimeout(()=>goToStage(7),1000);
-}else{
-document.getElementById('passwordHint').textContent='Try "Shafeeq" or "Hubby" 💛';
+// Love Lock Puzzle
+function moveToNext(input,num){
+if(input.value.length===1&&num<4){
+document.getElementById(`code${num+1}`).focus();
+}
+if(num===4&&input.value.length===1){
+checkLoveCode();
+}
+}
+
+function checkLoveCode(){
+const code=document.getElementById('code1').value+
+document.getElementById('code2').value+
+document.getElementById('code3').value+
+document.getElementById('code4').value;
+const validCodes=['0101','0214','0515','0707','0808','1212','1111'];
+if(validCodes.includes(code)||code.length===4){
+document.getElementById('lockHint').textContent='✅ Correct! Unlocking...';
+document.getElementById('lockHint').style.color='#00ff00';
+document.getElementById('lockIcon').classList.add('unlocked');
+for(let i=0;i<30;i++){
 setTimeout(()=>{
-document.getElementById('passwordHint').textContent='';
+createParticle(['💛','✨','⭐'][Math.floor(Math.random()*3)],Math.random()*window.innerWidth,Math.random()*window.innerHeight);
+},i*40);
+}
+setTimeout(()=>goToStage(7),1200);
+}else{
+document.getElementById('lockHint').textContent='❌ Try again! Hint: MMDD format';
+setTimeout(()=>{
+document.getElementById('lockHint').textContent='';
 },2000);
 }
 }
 
-function skipPassword(){
-goToStage(7);
+function skipLock(){
+document.getElementById('lockIcon').classList.add('unlocked');
+setTimeout(()=>goToStage(7),1000);
 }
 
 // Spinner Wheel
@@ -937,37 +1083,95 @@ henna.classList.remove('beating');
 clearTimeout(heartbeatTimer);
 }
 
-// Balloon Game
-let worryCount=0;
-let balloonInterval;
-const worries=['Faslay','Garmi','Udasi','Tension','Dooriyan'];
-const balloonColors=['#ff6b9d','#c44569','#ffd700','#ff69b4','#ff8c94'];
+// Golden Eggs Game
+const eggMessages=[
+"💖 Aapki muskurahat meri duniya hai!",
+"🌟 Aapke bina mera din adhura hai!",
+"💝 Har raat aapki yaad mein guzarti hai!",
+"✨ Aap meri sabse haseen dua ho!",
+"💕 Aapki awaaz sunna mera favorite hai!",
+"🌙 Aapke saath har pal jannat hai!",
+"💗 Aap meri zindagi ki roshni ho!",
+"🦋 Aapke liye mera pyar bemisaal hai!",
+"💫 InshaAllah hamesha saath rahenge!"
+];
+let eggscracked=0;
 
-function createBalloon(){
-const game=document.getElementById('balloonGame');
-const balloon=document.createElement('div');
-balloon.className='balloon';
-balloon.textContent=worries[Math.floor(Math.random()*worries.length)];
-balloon.style.background=balloonColors[Math.floor(Math.random()*balloonColors.length)];
-balloon.style.left=Math.random()*85+'%';
-balloon.style.setProperty('--drift',(Math.random()*40-20)+'px');
-balloon.style.animationDuration=(Math.random()*2+5)+'s';
-balloon.onclick=function(){
-this.classList.add('pop');
-worryCount++;
-document.getElementById('worryCounter').textContent=`Worries Destroyed: ${worryCount}`;
-createParticle('❤️',this.getBoundingClientRect().left+30,this.getBoundingClientRect().top+35);
-setTimeout(()=>this.remove(),300);
-};
-game.appendChild(balloon);
-setTimeout(()=>balloon.remove(),8000);
+function crackEgg(el,index){
+if(el.classList.contains('cracked'))return;
+el.classList.add('cracked');
+eggscracked++;
+document.getElementById('eggMessage').textContent=eggMessages[index];
+document.getElementById('eggCounter').textContent=`Eggs Cracked: ${eggscracked}/9`;
+for(let i=0;i<15;i++){
+setTimeout(()=>{
+createParticle(['💛','✨','⭐','💖'][Math.floor(Math.random()*4)],
+el.getBoundingClientRect().left+35,
+el.getBoundingClientRect().top+40);
+},i*30);
+}
+if(eggscracked===9){
+setTimeout(()=>{
+document.getElementById('eggMessage').innerHTML='🎉 Sab eggs crack ho gaye!<br>Aapka Hubby aapse bhot pyar karta hai! 🎉';
+for(let i=0;i<50;i++){
+setTimeout(()=>{
+createParticle('❤️',Math.random()*window.innerWidth,Math.random()*window.innerHeight);
+},i*40);
+}
+},500);
+}
 }
 
-function startBalloonGame(){
-for(let i=0;i<5;i++){
-setTimeout(()=>createBalloon(),i*400);
+// Virtual Hug
+let hugTimer;
+function startHug(){
+const heart=document.getElementById('hugHeart');
+heart.style.transform='scale(1.3)';
+heart.style.filter='drop-shadow(0 0 30px rgba(255,105,180,1))';
+if(navigator.vibrate){
+navigator.vibrate([200,100,200,100,200,100,200]);
 }
-balloonInterval=setInterval(createBalloon,1800);
+for(let i=0;i<30;i++){
+setTimeout(()=>{
+createParticle(['❤️','💕','💖','💗'][Math.floor(Math.random()*4)],
+window.innerWidth/2+Math.random()*100-50,
+window.innerHeight/2+Math.random()*100-50);
+},i*50);
+}
+hugTimer=setTimeout(()=>{
+document.getElementById('hugMessage').style.opacity='1';
+},1500);
+}
+
+function endHug(){
+const heart=document.getElementById('hugHeart');
+heart.style.transform='scale(1)';
+heart.style.filter='none';
+clearTimeout(hugTimer);
+}
+
+// Shooting Star
+const starStyle=document.createElement('style');
+starStyle.textContent='@keyframes shootStar{0%{left:-50px;top:20%}100%{left:110%;top:80%}}';
+document.head.appendChild(starStyle);
+
+let starCaught=false;
+function catchStar(){
+if(starCaught)return;
+starCaught=true;
+const star=document.getElementById('shootingStar');
+star.style.animation='none';
+star.style.fontSize='4rem';
+star.style.transform='scale(2)';
+star.style.filter='drop-shadow(0 0 30px rgba(255,215,0,1))';
+document.getElementById('starMessage').style.opacity='1';
+for(let i=0;i<40;i++){
+setTimeout(()=>{
+createParticle(['⭐','✨','🌟','💫'][Math.floor(Math.random()*4)],
+Math.random()*window.innerWidth,
+Math.random()*window.innerHeight);
+},i*40);
+}
 }
 
 // Gift Box
@@ -992,8 +1196,8 @@ function startCountdown(){
 const countdownEl=document.getElementById('countdown');
 function updateCountdown(){
 const now=new Date();
-const eidDate=new Date('2026-06-07T06:00:00');
-const diff=eidDate-now;
+const chandRaat=new Date('2026-05-27T18:00:00');
+const diff=chandRaat-now;
 if(diff>0){
 const days=Math.floor(diff/(1000*60*60*24));
 const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
@@ -1001,7 +1205,7 @@ const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
 const seconds=Math.floor((diff%(1000*60))/1000);
 countdownEl.textContent=`${String(days).padStart(2,'0')}:${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
 }else{
-countdownEl.textContent='Eid Mubarak! ✨';
+countdownEl.textContent='Chand Raat Mubarak! ✨';
 }
 }
 updateCountdown();
