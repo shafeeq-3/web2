@@ -557,7 +557,7 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 <div class="heart-card" onclick="flipCard(this,7)">❓</div>
 </div>
 <p class="txt" id="matchFeedback" style="color:#ff69b4;min-height:30px"></p>
-<button class="btn" id="matchNext" style="display:none" onclick="goToStage(3)">Continue the journey ✨</button>
+<button class="btn" id="matchNext" onclick="goToStage(3)">Continue the journey ✨</button>
 </div>
 </div>
 
@@ -740,7 +740,7 @@ to{transform:translateY(110vh) rotate(720deg);opacity:0}
 <!-- STAGE 13: FINAL LETTER -->
 <div class="stage" id="stage13">
 <div class="card">
-<div class="countdown" id="countdown">00:00:00:00</div>
+<div class="countdown" id="countdown">03:00:00</div>
 <div class="title">The Last Separate Chand Raat</div>
 <p class="txt" style="text-align:left;line-height:2">Qandeel, meri jaan...<br><br>This is the last Chand Raat we spend apart. InshaAllah, agli Chand Raat ko hum sath honge.<br><br>Har roz hum online baat karte hain, aapki awaaz sunne ko milti hai. Par main chahta hoon ki bhot jald yeh awaaz mere paas se aaye, physically.<br><br>I promise you, my beautiful wife, that every day of waiting will be worth it. InshaAllah jab hum milenge, us din aapko samajh aayega ki yeh sab wait... it was all leading to our forever.<br><br>Chand Raat Mubarak to my permanent wife, my queen, my everything.<br><br>Hamesha aapka,<br>Your Hubby Shafeeq ❤️</p>
 <div class="final-heart" id="finalHeart" onclick="celebrate()">
@@ -840,7 +840,6 @@ createParticle('❤️',card2.el.getBoundingClientRect().left+40,card2.el.getBou
 if(matchedPairs===4){
 setTimeout(()=>{
 document.getElementById('matchFeedback').textContent='🎉 Sab hearts match ho gaye! Aapka Hubby aapse bhot pyar karta hai! 🎉';
-document.getElementById('matchNext').style.display='block';
 for(let i=0;i<40;i++){
 setTimeout(()=>{
 createParticle(['❤️','💕','💖','💗'][Math.floor(Math.random()*4)],Math.random()*window.innerWidth,Math.random()*window.innerHeight);
@@ -1196,14 +1195,14 @@ function startCountdown(){
 const countdownEl=document.getElementById('countdown');
 function updateCountdown(){
 const now=new Date();
-const chandRaat=new Date('2026-05-27T18:00:00');
+const chandRaat=new Date(now.getTime()+(3*60*60*1000));
 const diff=chandRaat-now;
 if(diff>0){
 const days=Math.floor(diff/(1000*60*60*24));
 const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
 const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
 const seconds=Math.floor((diff%(1000*60))/1000);
-countdownEl.textContent=`${String(days).padStart(2,'0')}:${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+countdownEl.textContent=`${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
 }else{
 countdownEl.textContent='Chand Raat Mubarak! ✨';
 }
